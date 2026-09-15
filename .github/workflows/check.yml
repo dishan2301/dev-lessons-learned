@@ -1,0 +1,34 @@
+name: check-known-fixes
+
+on:
+  push:
+    paths:
+      - "known-fixes.md"
+      - "error-log.md"
+      - "scripts/**"
+  pull_request:
+    paths:
+      - "known-fixes.md"
+      - "error-log.md"
+      - "scripts/**"
+
+jobs:
+  check-row-limit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Check known-fixes.md row limit
+        run: python scripts/check_known_fixes.py
+
+  check-secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Scan for likely secrets
+        run: python scripts/check_secrets.py
